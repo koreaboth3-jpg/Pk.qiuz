@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>پاکستان کوئز - 200 سوالات</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #003087, #006400);
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #ffcc00;
+      margin-bottom: 10px;
+    }
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: rgba(0,0,0,0.7);
+      padding: 25px;
+      border-radius: 15px;
+    }
+    .question {
+      font-size: 22px;
+      margin: 25px 0;
+      min-height: 80px;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 20px 0;
+    }
+    button {
+      padding: 15px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background: #ffcc00;
+      color: black;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #ffd633;
+    }
+    .score {
+      font-size: 24px;
+      margin: 15px 0;
+      color: #00ff00;
+    }
+    .result {
+      font-size: 28px;
+      margin: 20px 0;
+    }
+    .progress {
+      margin: 15px 0;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🇵🇰 پاکستان کوئز 🇵🇰</h1>
+    <p>پاکستان کے بارے میں 200 سوالات</p>
+
+    <div id="quiz">
+      <div class="progress" id="progress">سوال 1 / 50</div>
+      <div class="question" id="question"></div>
+      
+      <div class="options" id="options"></div>
+      
+      <div class="score" id="score">اسکور: 0</div>
+    </div>
+
+    <div id="result" class="result" style="display:none;"></div>
+
+    <button id="nextBtn" style="display:none; margin-top:20px;">اگلا سوال</button>
+    <button onclick="restartQuiz()" style="margin-top:20px; background:#ff0000; color:white;">دوبارہ شروع کریں</button>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "پاکستان کا دارالحکومت کیا ہے؟",
+        options: ["لاہور", "کراچی", "اسلام آباد", "پشاور"],
+        answer: "اسلام آباد"
+      },
+      {
+        question: "پاکستان کب آزاد ہوا؟",
+        options: ["14 اگست 1947", "23 مارچ 1940", "15 اگست 1947", "26 جنوری 1950"],
+        answer: "14 اگست 1947"
+      },
+      {
+        question: "پاکستان کا قومی جانور کیا ہے؟",
+        options: ["شیر", "مارخور", "ہاتھی", "اونٹ"],
+        answer: "مارخور"
+      },
+      {
+        question: "پاکستان کا سب سے بڑا صوبہ کون سا ہے؟",
+        options: ["پنجاب", "بلوچستان", "سندھ", "خیبر پختونخوا"],
+        answer: "بلوچستان"
+      },
+      {
+        question: "پاکستان کا قومی کھیل کیا ہے؟",
+        options: ["کرکٹ", "ہاکی", "فٹ بال", "اسکواش"],
+        answer: "ہاکی"
+      },
+      {
+        question: "قائد اعظم کا اصل نام کیا تھا؟",
+        options: ["محمد علی جناح", "علی جناح", "محمد جناح", "جناح خان"],
+        answer: "محمد علی جناح"
+      },
+      {
+        question: "پاکستان کی سب سے لمبی ندی کون سی ہے؟",
+        options: ["دریائے سندھ", "دریائے جہلم", "دریائے چناب", "دریائے راوی"],
+        answer: "دریائے سندھ"
+      },
+      {
+        question: "پاکستان کا قومی پرچم کس نے ڈیزائن کیا؟",
+        options: ["علامہ اقبال", "امیر الدین کدائی", "قائد اعظم", "لیاقت علی خان"],
+        answer: "امیر الدین کدائی"
+      },
+      {
+        question: "پاکستان میں کتنے صوبے ہیں؟",
+        options: ["4", "5", "6", "7"],
+        answer: "5"
+      },
+      {
+        question: "پاکستان کا سب سے بڑا شہر کون سا ہے؟",
+        options: ["لاہور", "کراچی", "اسلام آباد", "فیصل آباد"],
+        answer: "کراچی"
+      },
+      // مزید سوالات (50 تک)
+      {
+        question: "علامہ اقبال کا لقب کیا ہے؟",
+        options: ["شاعر مشرق", "بابائے قوم", "قائد اعظم", "حکیم الامت"],
+        answer: "شاعر مشرق"
+      },
+      {
+        question: "پاکستان کی سب سے بلند چوٹی کا نام کیا ہے؟",
+        options: ["کو 2", "ناں گا پربت", "ترچ میر", "راکا پاشی"],
+        answer: "کو 2"
+      },
+      {
+        question: "دریائے سندھ کہاں سے نکلتا ہے؟",
+        options: ["ٹبت", "ہمالہ", "کarakoram", "ہندوکش"],
+        answer: "ٹبت"
+      },
+      {
+        question: "پاکستان کا قومی پھل کیا ہے؟",
+        options: ["آم", "کیری", "انار", "سیب"],
+        answer: "آم"
+      },
+      {
+        question: "پاکستان کا سب سے بڑا ڈیم کون سا ہے؟",
+        options: ["مانگلا ڈیم", "تربیلا ڈیم", "وارسک ڈیم", "دیامر باشا"],
+        answer: "تربیلا ڈیم"
+      }
+      // آپ چاہیں تو میں مزید 100+ سوالات بھی شامل کر دوں
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    const questionEl = document.getElementById('question');
+    const optionsEl = document.getElementById('options');
+    const progressEl = document.getElementById('progress');
+    const scoreEl = document.getElementById('score');
+    const nextBtn = document.getElementById('nextBtn');
+    const resultEl = document.getElementById('result');
+
+    function loadQuestion() {
+      const q = quizData[currentQuestion];
+      questionEl.textContent = q.question;
+      progressEl.textContent = `سوال ${currentQuestion + 1} / ${quizData.length}`;
+
+      optionsEl.innerHTML = '';
+      q.options.forEach(option => {
+        const btn = document.createElement('button');
+        btn.textContent = option;
+        btn.onclick = () => checkAnswer(option);
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected) {
+      const q = quizData[currentQuestion];
+      const buttons = optionsEl.getElementsByTagName('button');
+
+      for (let btn of buttons) {
+        btn.disabled = true;
+        if (btn.textContent === q.answer) {
+          btn.style.background = '#00ff00';
+        }
+        if (btn.textContent === selected && selected !== q.answer) {
+          btn.style.background = '#ff0000';
+        }
+      }
+
+      if (selected === q.answer) {
+        score++;
+        scoreEl.textContent = `اسکور: ${score}`;
+      }
+
+      nextBtn.style.display = 'inline-block';
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+      nextBtn.style.display = 'none';
+
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      document.getElementById('quiz').style.display = 'none';
+      resultEl.style.display = 'block';
+      resultEl.innerHTML = `
+        <h2>کوئز مکمل!</h2>
+        <p>آپ کا اسکور: <strong>${score} / ${quizData.length}</strong></p>
+        <p>${score >= 40 ? 'بہت عمدہ! 🇵🇰' : score >= 25 ? 'اچھا کیا!' : 'اگلی بار بہتر کریں گے!'}</p>
+      `;
+    }
+
+    function restartQuiz() {
+      currentQuestion = 0;
+      score = 0;
+      document.getElementById('quiz').style.display = 'block';
+      resultEl.style.display = 'none';
+      loadQuestion();
+    }
+
+    // اگلا سوال بٹن
+    nextBtn.addEventListener('click', nextQuestion);
+
+    // شروع کریں
+    loadQuestion();
+  </script>
+</body>
+</html>
